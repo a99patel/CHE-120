@@ -7,7 +7,7 @@ Exercises
 3. Change where pacman starts.
 4. Make the ghosts faster/slower.
 5. Make the ghosts smarter.
-"""
+""" 
 
 from random import choice #Function responsible for choosing a random element from a list. This helps randomize the ghosts directions. #RB
 from turtle import * #a python library responsible of creating the graphics and animations using a turtle like animation.This helps create the path and enviroment of the game. # RB
@@ -157,24 +157,24 @@ def move():
     ontimer(move, 100)
 
 
-def change(x, y):
-    """Change pacman aim if valid."""
-    if valid(pacman + vector(x, y)):
-        aim.x = x
-        aim.y = y
+def change(x, y): #This function is responsible for the movement of Pacman RD
+    """Change pacman aim if valid.""" #Docstring RD
+    if valid(pacman + vector(x, y)): #Accounts for change in current position RD
+        aim.x = x #Horizontal change RD
+        aim.y = y #Vertical change RD
 
 
-setup(420, 420, 370, 0)
-hideturtle()
-tracer(False)
-writer.goto(160, 160)
-writer.color('white')
-writer.write(state['score'])
-listen()
-onkey(lambda: change(5, 0), 'Right')
-onkey(lambda: change(-5, 0), 'Left')
-onkey(lambda: change(0, 5), 'Up')
-onkey(lambda: change(0, -5), 'Down')
-world()
-move()
-done()
+setup(420, 420, 370, 0) #This sets up the parameters of the game window RD
+hideturtle() #Hides the turtle cursor which is used to draw things like Walls RD
+tracer(False) #Turns off automatic screen updates RD
+writer.goto(160, 160) #Moves the turtle cursor to a new position RD
+writer.color('white') #Makes the text white RD
+writer.write(state['score']) #Displays the score on the screen RD
+listen() #Allows for keyboard input to be taken in so that the following codes can work RD
+onkey(lambda: change(5, 0), 'Right') #Pacman moves right when right arrow is pressed RD
+onkey(lambda: change(-5, 0), 'Left') #Pacman moves left when left arrow is pressed RD
+onkey(lambda: change(0, 5), 'Up') #Pacman moves up when up arrow is pressed RD
+onkey(lambda: change(0, -5), 'Down') #Pacman moves down when down arrow is pressed RD
+world() #Sets up all the factors of the world game such as the ghosts and path RD
+move() #Allows for movement to occur RD
+done() #Ends the game RD
