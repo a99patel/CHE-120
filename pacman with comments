@@ -109,52 +109,52 @@ def world():
 
 def move():
     """Move pacman and all ghosts."""
-    writer.undo()
-    writer.write(state['score'])
+    writer.undo()# Undoes the previously displayed score to refresh it for the new score.KM
+    writer.write(state['score'])# Displays the current score.KM
 
-    clear()
+    clear() # Erases the last frame on the screen to prepare for the next one.KM
 
     if valid(pacman + aim):
-        pacman.move(aim)
+        pacman.move(aim) # If the next move of pacman is valid (doesnt hit an obstacle or go out of bounds) pacman moves in the direction of the 'aim'.KM
 
-    index = offset(pacman)
+    index = offset(pacman) # Gets the index of the tile that pacman is currently on.KM
 
     if tiles[index] == 1:
-        tiles[index] = 2
-        state['score'] += 1
+        tiles[index] = 2 # If pacman is on a tile that has a pellet represented by a '1' change it to be a '2' to signify the pellet has been eaten.KM
+        state['score'] += 1 # Increase the score due to the eaten pellet.KM
         x = (index % 20) * 20 - 200
-        y = 180 - (index // 20) * 20
-        square(x, y)
+        y = 180 - (index // 20) * 20 # Calculates the x and y coordinates for the tile where the pellet was eaten, these coordinates are adjusted based off the index to place the square.KM
+        square(x, y) # Puts a small square on the tile whre pacman just ate the pellet.KM
 
-    up()
-    goto(pacman.x + 10, pacman.y + 10)
-    dot(20, 'yellow')
+    up() # Goes to pacmans current position and draws the dot representing him.KM
+    goto(pacman.x + 10, pacman.y + 10) # Moves to pacmans current position a little but offset.KM
+    dot(20, 'yellow') # Draws a size 20 yellow dot representing pacman.KM
 
     for point, course in ghosts:
-        if valid(point + course):
+        if valid(point + course): # If the ghosts next move is valid it moves.KM
             point.move(course)
-        else:
+        else: # If the ghosts next move is not valid, it randomly chooses one of the options below.KM
             options = [
-                vector(5, 0),
-                vector(-5, 0),
-                vector(0, 5),
-                vector(0, -5),
+                vector(5, 0), # Move right.KM
+                vector(-5, 0), # Move left.KM
+                vector(0, 5), # Move up.KM
+                vector(0, -5), # Move down.KM
             ]
-            plan = choice(options)
+            plan = choice(options) # Chooses one of the direction options.KM
             course.x = plan.x
             course.y = plan.y
 
-        up()
-        goto(point.x + 10, point.y + 10)
-        dot(20, 'red')
+        up() # Moves to the ghosts location on screen to draw it.KM
+        goto(point.x + 10, point.y + 10) # Moves the ghosts position with a little offset.KM
+        dot(20, 'red') # Draws a red dot (the ghost).KM
 
-    update()
+    update() # Updates the screen to show the latest positions of the ghosts and pacman.KM
 
-    for point, course in ghosts:
+    for point, course in ghosts: # Checking is pacman has collided with a ghost.KM
         if abs(pacman - point) < 20:
-            return
+            return # If pacman is detected less that 20 units from a ghost end the game or stop movement assuming its fatal.KM
 
-    ontimer(move, 100)
+    ontimer(move, 100) # Sets up a time to call the 'move' function after 100 milliseconds.KM
 
 
 def change(x, y):
