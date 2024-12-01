@@ -12,6 +12,7 @@ Exercises
 from random import choice 
 from turtle import * 
 from freegames import floor, vector 
+import time
 
 state = {'score': 0} 
 path = Turtle(visible=False)
@@ -49,6 +50,9 @@ tiles = [
 ]
 # fmt: on
 
+level_time = 60
+start_time - time.time()
+game_over = False 
 
 def square(x, y): 
     """Draw square using path at (x, y)."""
@@ -110,6 +114,13 @@ def move():
     writer.undo()
     writer.write(state['score'])
 
+    elapsed_time = time.time() - start_time
+    remaining_time = max(0, level_time - elapsed_time)  
+
+    writer.goto(160, 160)  
+    writer.clear()
+    writer.write(f"Time: {int(remaining_time)}", align="left", font=("Times New Roman Bold", 24, "normal"))
+
     clear()
 
     if valid(pacman + aim):
@@ -150,9 +161,18 @@ def move():
 
     for point, course in ghosts:
         if abs(pacman - point) < 20:
-            return
+            game_over = True
+    if remaining_time <= 0:
+        game_over = True
 
-    ontimer(move, 100)
+    if game_over:
+        writer.goto(0, 0)
+        writer.color('red')
+        writer.clear()
+        writer.write("Game Over!☹️", align="center", font=("Times New Roman Bold", 36, "normal"))
+
+    else:
+        ontimer(move, 50)
 
 
 def change(x, y):
