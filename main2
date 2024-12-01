@@ -8,24 +8,23 @@ Exercises
 4. Make the ghosts faster/slower.
 5. Make the ghosts smarter.
 """
+from random import choice
+from turtle import *
+from freegames import floor, vector
+import time  # Import time module for tracking elapsed time
 
-from random import choice 
-from turtle import * 
-from freegames import floor, vector 
-import time
-
-state = {'score': 0} 
+state = {'score': 0}
 path = Turtle(visible=False)
 writer = Turtle(visible=False)
-aim = vector(5, 0) 
+aim = vector(5, 0)
 pacman = vector(-40, -80)
 ghosts = [
     [vector(-180, 160), vector(5, 0)],
     [vector(-180, -160), vector(0, 5)],
     [vector(100, 160), vector(0, -5)],
     [vector(100, -160), vector(-5, 0)],
-] 
- fmt: off
+]
+
 tiles = [
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
@@ -48,26 +47,27 @@ tiles = [
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 ]
-# fmt: on
 
-level_time = 60
-start_time - time.time()
-game_over = False 
+level_time = 60  
+start_time = time.time() 
+game_over = False
 
-def square(x, y): 
+
+def square(x, y):
     """Draw square using path at (x, y)."""
-    path.up() 
-    path.goto(x, y) 
-    path.down() 
-    path.begin_fill() 
+    path.up()
+    path.goto(x, y)
+    path.down()
+    path.begin_fill()
 
-    for count in range(4): 
-        path.forward(20) 
+    for count in range(4):
+        path.forward(20)
         path.left(90)
 
-    path.end_fill() 
+    path.end_fill()
 
-def offset(point):   
+
+def offset(point):
     """Return offset of point in tiles."""
     x = (floor(point.x, 20) + 200) / 20
     y = (180 - floor(point.y, 20)) / 20
@@ -111,6 +111,8 @@ def world():
 
 def move():
     """Move pacman and all ghosts."""
+    global game_over
+
     writer.undo()
     writer.write(state['score'])
 
@@ -162,6 +164,8 @@ def move():
     for point, course in ghosts:
         if abs(pacman - point) < 20:
             game_over = True
+            break
+
     if remaining_time <= 0:
         game_over = True
 
@@ -196,3 +200,7 @@ onkey(lambda: change(0, -5), 'Down')
 world()
 move()
 done()
+
+
+    
+ 
