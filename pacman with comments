@@ -65,56 +65,57 @@ def square(x, y): #this function creates the squares that make up the grid, made
     path.end_fill() #this ends the loops and creats the squares/paths filled with colour. RB
 
 
-def offset(point):
+def offset(point): #calculates the index of a specific point on a grid using the tiles data structure. AP
     """Return offset of point in tiles."""
-    x = (floor(point.x, 20) + 200) / 20
-    y = (180 - floor(point.y, 20)) / 20
-    index = int(x + y * 20)
-    return index
+    x = (floor(point.x, 20) + 200) / 20 #Computes the horizontal grid index for the point. AP
+    y = (180 - floor(point.y, 20)) / 20 #Computes the vertical grid index for the point. AP
+    index = int(x + y * 20) #Converts the tile grid coordinates into a 1D index for array access. AP 
+    return index #Returns the calculated index. AP
 
 
-def valid(point):
+def valid(point):  #Checks whether a given point is valid for movement in the tiles grid. AP
     """Return True if point is valid in tiles."""
-    index = offset(point)
+    index = offset(point) #Calculates the tile index for the given point using the offset function. AP
 
-    if tiles[index] == 0:
+    if tiles[index] == 0: #Returns False if the tile at the calculated index is 0, which indicates an invalid or blocked area. AP
         return False
 
-    index = offset(point + 19)
+    index = offset(point + 19) #Rechecks validity for an offset point by adding 19. AP
 
-    if tiles[index] == 0:
+    if tiles[index] == 0: #Returns False if the adjusted tile is invalid. AP
         return False
 
-    return point.x % 20 == 0 or point.y % 20 == 0
+    return point.x % 20 == 0 or point.y % 20 == 0 #Validates that the point lies on a grid boundary which is aligned to a multiple of 20. AP
 
 
-def world():
+def world(): #This function draws the game world based on the tiles grid. AP
     """Draw world using path."""
-    bgcolor('black')
-    path.color('blue')
+    bgcolor('black') #Sets the background color to black. AP
+    path.color('blue') #Sets the drawing tool color to blue. AP
 
-    for index in range(len(tiles)):
+    for index in range(len(tiles)): #Loops through each tile in the tiles grid and retrieves its value. AP
         tile = tiles[index]
 
-        if tile > 0:
-            x = (index % 20) * 20 - 200
-            y = 180 - (index // 20) * 20
-            square(x, y)
+        if tile > 0: #If the tile value is greater than 0, it calculates its screen coordinates. AP
+            x = (index % 20) * 20 - 200 #Determines the column coordinates. AP
+            y = 180 - (index // 20) * 20 #Determines the row coordinates. AP
+            square(x, y) #Draws a square at the calculated coordinates. AP
 
-            if tile == 1:
+            if tile == 1: #If the tile value is 1, it draws a small white dot at the center of the square. AP
                 path.up()
                 path.goto(x + 10, y + 10)
                 path.dot(2, 'white')
 
 
-def move():
+def move(): #Handles movement logic for Pac-Man and ghosts in the game. AP
     """Move pacman and all ghosts."""
-    writer.undo()
-    writer.write(state['score'])
+    writer.undo() #Updates the game's score display removing the previous score. AP
+    writer.write(state['score']) #Updates the game's score display by writing the current one. AP
 
-    clear()
 
-    if valid(pacman + aim):
+    clear() #Clears the screen before redrawing the updated game state. AP
+
+    if valid(pacman + aim): #Checks if moving Pac-Man in the direction of aim results in a valid position. If True, moves Pac-Man accordingly. AP
         pacman.move(aim)
 
     index = offset(pacman)
