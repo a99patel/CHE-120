@@ -9,22 +9,21 @@ Exercises
 5. Make the ghosts smarter.
 """
 
-from random import choice #Function responsible for choosing a random element from a list. This helps randomize the ghosts directions. #RB
-from turtle import * #a python library responsible of creating the graphics and animations using a turtle like animation.This helps create the path and enviroment of the game. # RB
-
-from freegames import floor, vector #
+from random import choice 
+from turtle import * 
+from freegames import floor, vector 
 
 state = {'score': 0} 
 path = Turtle(visible=False)
 writer = Turtle(visible=False)
 aim = vector(5, 0) 
-pacman = vector(-40, -80)#dimensions for the packman, interms of the grid. RB
+pacman = vector(-40, -80)
 ghosts = [
     [vector(-180, 160), vector(5, 0)],
     [vector(-180, -160), vector(0, 5)],
     [vector(100, 160), vector(0, -5)],
     [vector(100, -160), vector(-5, 0)],
-] #dimensions for the ghost, interms of the grid. RB
+] 
 # fmt: off
 tiles = [
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -47,25 +46,24 @@ tiles = [
     0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-] #this part of the code lays out the map of the game. The 0's represents the areas pacman can't pass through, such as the walls or empty spaces. While the 1's represent the areas pacman can pass through, these areas contain the dots which packman eats. RB
+]
 # fmt: on
 
 
-def square(x, y): #this function creates the squares that make up the grid, made up of x and y parameters. RB
+def square(x, y): 
     """Draw square using path at (x, y)."""
-    path.up() #to draw the squares, it's drawn in a upward direction. RB
-    path.goto(x, y) # the squares is drawn by the the specific x and y coordinates. RB
-    path.down() #the squares are drawn in a downward direction. RB
-    path.begin_fill() #starts the begining of a new path. RB
+    path.up() 
+    path.goto(x, y) 
+    path.down() 
+    path.begin_fill() 
 
-    for count in range(4): #this for loop is run for a range four times to create the squares/paths. RB 
-        path.forward(20) #moves forward 20 times 
-        path.left(90) #turns to the left 90 degrees. RB
+    for count in range(4): 
+        path.forward(20) 
+        path.left(90)
 
-    path.end_fill() #this ends the loops and creats the squares/paths filled with colour. RB
+    path.end_fill() 
 
-
-def offset(point):    #this function calculates the "offset" or index of a specific point on the pacman grid using the tiles data structure.
+def offset(point):   
     """Return offset of point in tiles."""
     x = (floor(point.x, 20) + 200) / 20
     y = (180 - floor(point.y, 20)) / 20
