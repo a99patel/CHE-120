@@ -102,7 +102,7 @@ def world():
             if tile == 1:
                 path.up()
                 path.goto(x + 10, y + 10)
-                path.dot(2, 'white')
+                path.dot(4, 'light blue')
 
 
 def move():
@@ -126,7 +126,7 @@ def move():
 
     up()
     goto(pacman.x + 10, pacman.y + 10)
-    dot(20, 'yellow')
+    dot(20, 'light green')
 
     for point, course in ghosts:
         if valid(point + course):
@@ -144,7 +144,7 @@ def move():
 
         up()
         goto(point.x + 10, point.y + 10)
-        dot(20, 'red')
+        dot(20, 'white')
 
     update()
 
